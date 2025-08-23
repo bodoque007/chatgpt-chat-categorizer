@@ -1,0 +1,121 @@
+.cw-popup * {
+    margin: 0;
+}
+
+
+
+.cw-watchlist-popup-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000d;
+    backdrop-filter: blur(5px);
+    position: fixed;
+    z-index: 20;
+
+}
+
+.cw-popup {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    gap: 10px;
+    background-color: #141414;
+    border-radius: 5px;
+    padding: 28px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 400px;
+    z-index: 30;
+}
+
+.cw-popup h2 {
+    font-size: 20pt;
+}
+
+.cw-popup img {
+    border-radius: 5px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.cw-no-watchlist-text {
+    font-size: 12pt;
+}
+
+.cw-watchlists-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+}
+
+.cw-watchlists-list li {
+    padding: 8px;
+    border-radius: 5px;
+    transition: all 0.2s;
+    font-size: 14pt;
+    background-color: #222;
+}
+
+.cw-watchlists-list li:hover {
+    cursor: pointer;
+    transition: all 0.2s;
+    /* background: linear-gradient(to right, #d32020, transparent); */
+    transform: scale(1.05);
+    font-size: 14pt;
+    background-color: #cf0d0d;
+}
+
+.cw-custom-watchlists-btn {
+    background: #fff1;
+    border: 2px solid #fffa;
+    border-radius: 100px;
+
+
+}
+
+.cw-custom-watchlists-btn:hover {
+    background: #fff3;
+    border: 2px solid #ffffffd8 100px;
+
+}
+
+.buttonControls--expand-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+#cw-close-popup-btn {
+    border: none;
+    text-align: end;
+    background: transparent;
+    border-radius: 200px;
+    font-size: 18pt;
+    color: white;
+    cursor: pointer;
+}
+
+#cw-custom-watchlists-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    transition: color 0.5s;
+    padding: 0;
+}
+
+#cw-custom-watchlists-btn:hover {
+
+    transition: color 0.5s;
+    color: #ddd;
+
+}

@@ -1,0 +1,117 @@
+* {
+    font-family: NetflixSans;
+    margin: 0;
+}
+
+body {
+
+    color: white;
+    background-color: #141414;
+}
+
+
+
+#create-watchlist-btn {
+    color: white;
+    margin-right: 20px;
+    background-color: #0000;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+#create-watchlist-btn:hover {
+    transform: scale(1.05);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+#lists-container {
+    padding-top: 60px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.watchlist-container {
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px;
+}
+
+.watchlist-container .title {
+    margin-left: 16px;
+    font-size: 20pt;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    width: 100vw;
+    background: linear-gradient(to bottom, #000, transparent);
+
+}
+
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    padding: 15px;
+}
+
+.nav-right {
+    justify-content: end;
+}
+
+
+@media (max-width:665px) {
+    .elements-container {
+        place-items: center;
+    }
+}
+
+.elements-container {
+    width: calc(100vw - 60px);
+    display: grid;
+
+    /* Responsive columns: as many as fit, min 200px each */
+    grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+    /* Implicit rows are created automatically as needed */
+    grid-auto-rows: auto;
+    /* or try minmax(120px, auto) for a min height */
+    grid-auto-flow: row;
+    /* default; items fill rows left→right, top→bottom */
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.element-card-image,
+.element-card-text {
+    border-radius: 5px;
+    width: 300px;
+    transition: transform 0.2s;
+
+}
+
+.element-card-image:hover {
+    transition: transform 0.2s;
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+.element-card-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14pt;
+    height: 168.72px;
+    background-color: #0c0c0c;
+}
