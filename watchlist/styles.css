@@ -81,14 +81,9 @@ body {
 .elements-container {
     width: calc(100vw - 60px);
     display: grid;
-
-    /* Responsive columns: as many as fit, min 200px each */
     grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
-    /* Implicit rows are created automatically as needed */
     grid-auto-rows: auto;
-    /* or try minmax(120px, auto) for a min height */
     grid-auto-flow: row;
-    /* default; items fill rows left→right, top→bottom */
     gap: 1rem;
     padding: 1rem;
 }
@@ -114,4 +109,27 @@ body {
     font-size: 14pt;
     height: 168.72px;
     background-color: #0c0c0c;
+}
+
+.watchlist-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.delete-watchlist-btn {
+    background: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 2px;
+    margin-right: 30px;
+}
+
+.delete-watchlist-btn:hover {
+    transition: all 0.2s;
+    color: #bb2020;
+    transform: scale(1.1);
 }

@@ -30,10 +30,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			});
 			break;
 
-		// case "addToList":
-		// 	await chrome.storage.local.set({ watchlists: ["test"] });
-		// 	sendResponse({ status: "OK" });
-		// 	break;
+		case "deleteWatchlist":
+			const { id } = message;
+			chrome.storage.local.get({ watchlists: [] }).then(({ watchlists }) => {
+				const updatedWatchlists = watchlists.filter(watchlist => watchlist.id !== id);
+				chrome.storage.local.set({ watchlists: updatedWatchlists }).then(() => {
+					sendResponse(updatedWatchlists);
+				});
+			});
+			break;
 
 		case "createWatchlist":
 			const { name } = message;
