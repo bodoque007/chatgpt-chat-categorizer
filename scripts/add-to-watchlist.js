@@ -21,8 +21,7 @@ const createNoWatchlistText = () => {
 };
 
 const addElementToWatchList = (watchlist, element) => {
-	chrome.runtime.sendMessage({ type: "addToWatchlist", watchlist, element }).then(res => {
-		console.log(res);
+	chrome.runtime.sendMessage({ type: "addToWatchlist", watchlistId: watchlist.id, element }).then(res => {
 		closePopup();
 	});
 };

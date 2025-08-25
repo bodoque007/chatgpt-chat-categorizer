@@ -5,12 +5,34 @@ document.querySelector("#create-watchlist-btn").addEventListener("click", async 
 	loadMyLists(watchlists);
 });
 
-const createWatchlistCard = element => {
+const createWatchlistCard = (element, watchlist) => {
+	const div = document.createElement("div");
+	div.classList.add("element-card");
+
 	const img = document.createElement("img");
 	img.classList.add("element-card-image");
 	img.src = element.img;
-	img.onclick = () => chrome.runtime.sendMessage({ type: "playElement", link: element.playLink });
-	return img;
+	img.onclick = () => {
+		if (element.playLink) chrome.runtime.sendMessage({ type: "playElement", link: element.playLink });
+	};
+
+	const deleteBtn = document.createElement("button");
+	deleteBtn.classList.add("delete-element-btn");
+	deleteBtn.type = "button"; // Add this line to prevent form submission
+
+	const deleteSpan = document.createElement("span");
+	deleteSpan.textContent = "×";
+
+	deleteBtn.onclick = async e => {
+		e.preventDefault();
+		e.stopPropagation();
+		const watchlists = await chrome.runtime.sendMessage({ type: "removeFromWatchlist", elementId: element.id, watchlistId: watchlist.id });
+		loadMyLists(watchlists);
+	};
+	deleteBtn.appendChild(deleteSpan);
+	div.appendChild(img);
+	div.appendChild(deleteBtn);
+	return div;
 };
 
 const createEmptyWatchlistCard = () => {
@@ -30,6 +52,7 @@ const createWatchlistTitleContainer = watchlist => {
 
 	const deleteBtn = document.createElement("button");
 	deleteBtn.classList.add("delete-watchlist-btn");
+	deleteBtn.type = "button"; // Add this line
 	deleteBtn.textContent = "Delete";
 	deleteBtn.onclick = async () => {
 		if (confirm(`Are you sure you want to delete the watchlist "${watchlist.name}"?`)) {
@@ -52,7 +75,7 @@ const createWatchlistContainer = watchlist => {
 	const elementsContainer = document.createElement("div");
 	elementsContainer.classList.add("elements-container");
 
-	const cards = watchlist.elements.length > 0 ? watchlist.elements.map(element => createWatchlistCard(element)) : [createEmptyWatchlistCard()];
+	const cards = watchlist.elements.length > 0 ? watchlist.elements.map(element => createWatchlistCard(element, watchlist)) : [createEmptyWatchlistCard()];
 
 	elementsContainer.append(...cards);
 	container.appendChild(titleContainer);

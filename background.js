@@ -16,13 +16,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			break;
 		case "addToWatchlist":
 			chrome.storage.local.get({ watchlists: [] }).then(({ watchlists }) => {
-				const watchlistId = watchlists.findIndex(watchlist => watchlist.id === message.watchlist.id);
+				const watchlistIndex = watchlists.findIndex(watchlist => watchlist.id === message.watchlistId);
 
-				if (watchlists[watchlistId].elements.find(element => element.playLink === message.element.playLink) != undefined) {
+				if (watchlists[watchlistIndex].elements.find(element => element.playLink === message.element.playLink) != undefined) {
 					return sendResponse({ status: "failed", code: "element_already_exists" });
 				}
 
-				watchlists[watchlistId].elements = [...watchlists[watchlistId].elements, message.element];
+				const newElementId = watchlists[watchlistIndex].elements.length > 0 ? watchlists[watchlistIndex].elements.at(-1).id + 1 : 0;
+
+				watchlists[watchlistIndex].elements = [...watchlists[watchlistIndex].elements, { id: newElementId, ...message.element }];
 
 				chrome.storage.local.set({ watchlists }).then(() => {
 					sendResponse({ status: "success" });
@@ -43,15 +45,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		case "createWatchlist":
 			const { name } = message;
 			chrome.storage.local.get({ watchlists: [] }).then(({ watchlists }) => {
-				const lastId = watchlists.length > 0 ? watchlists.at(-1).id : 0;
-				console.log(watchlists, watchlists.at(-1));
-				const newWatchList = [...watchlists, { id: lastId + 1, name, elements: [] }];
+				const newId = watchlists.length > 0 ? watchlists.at(-1).id + 1 : 0;
+
+				const newWatchList = [...watchlists, { id: newId, name, elements: [] }];
 				chrome.storage.local.set({ watchlists: newWatchList }).then(() => {
 					sendResponse(newWatchList);
 				});
 			});
-			// const { watchlists } = await chrome.storage.local.get({ watchlists: [] });
+			break;
 
+		case "removeFromWatchlist":
+			const { watchlistId, elementId } = message;
+			chrome.storage.local.get({ watchlists: [] }).then(({ watchlists }) => {
+				const watchlistIndex = watchlists.findIndex(watchlist => watchlist.id === watchlistId);
+				if (watchlistIndex === -1) return sendResponse({ status: "failed", code: "watchlist_not_found" });
+
+				const elementIndex = watchlists[watchlistIndex].elements.findIndex(element => element.id === elementId);
+				if (elementIndex === -1) return sendResponse({ status: "failed", code: "element_not_found" });
+
+				watchlists[watchlistIndex].elements.splice(elementIndex, 1);
+
+				chrome.storage.local.set({ watchlists }).then(() => {
+					console.log("back", watchlists);
+					sendResponse(watchlists);
+				});
+			});
 			break;
 		case "playElement":
 			const { link } = message;
