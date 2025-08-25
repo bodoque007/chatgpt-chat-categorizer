@@ -19,4 +19,4 @@ No data is shared with developers, third parties, or external services.
 
 # Contact
 
-If you have any questions about this privacy policy, you may contact the developer at: [tu email].
+If you have any questions about this privacy policy, you may contact the developer at: joaquin.giordano2021@gmail.com
