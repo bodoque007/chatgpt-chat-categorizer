@@ -1,10 +1,16 @@
 {
-	"name": "Netflix Custom Lists",
-	"description": "Create your custom watchlists for Netflix",
+	"name": "Netflix Custom Watchlists",
+	"description": "Create your own custom watchlists for Netflix",
 	"version": "0.1",
 	"manifest_version": 3,
 	"action": {
-		"default_icon": "images/icon.png"
+		"default_icon": "images/icon-128.png"
+	},
+	"icons": {
+		"16": "images/icon-16.png",
+		"32": "images/icon-32.png",
+		"48": "images/icon-48.png",
+		"128": "images/icon-128.png"
 	},
 	"background": {
 		"service_worker": "background.js"
