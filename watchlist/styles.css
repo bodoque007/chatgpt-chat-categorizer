@@ -4,7 +4,6 @@
 }
 
 body {
-
     color: white;
     background-color: #141414;
 }
@@ -39,7 +38,6 @@ body {
 .watchlist-container {
     display: flex;
     flex-direction: column;
-
     padding: 0px 10px;
 }
 
@@ -52,7 +50,6 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-
     display: flex;
     width: 100vw;
     background: linear-gradient(to bottom, #000, transparent);
@@ -97,7 +94,6 @@ body {
 }
 
 .element-card-image:hover {
-
     cursor: pointer;
 }
 
@@ -144,7 +140,6 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     font-size: 20pt;
-
     top: 5px;
     right: 5px;
     z-index: 1000;
@@ -156,7 +151,6 @@ body {
     position: absolute;
     top: 0px;
     right: 8px;
-
     height: 5px;
 }
 

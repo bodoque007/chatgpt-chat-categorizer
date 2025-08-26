@@ -68,7 +68,6 @@
 .cw-watchlists-list li:hover {
     cursor: pointer;
     transition: all 0.2s;
-    /* background: linear-gradient(to right, #d32020, transparent); */
     transform: scale(1.05);
     font-size: 14pt;
     background-color: #cf0d0d;
