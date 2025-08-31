@@ -1,6 +1,6 @@
 # Privacy Policy for ChatGPT Organizer
 
-_Last updated:  
+Last updated: 06/31/2025
 
 ChatGPT Organizer ("the Extension") respects your privacy. This Privacy Policy explains what information is collected and how it is used.
 
