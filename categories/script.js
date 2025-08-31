@@ -78,7 +78,7 @@ const createCategoryTitleContainer = (category) => {
 
   const title = document.createElement("h2");
   title.classList.add("title");
-  title.innerHTML = `📁 ${category.name} <span style="font-size: 14px; color: #8e8ea0; font-weight: normal;">(${category.chats.length} chats)</span>`;
+  title.textContent = `📁 ${category.name} <span style="font-size: 14px; color: #8e8ea0; font-weight: normal;">(${category.chats.length} chats)</span>`;
 
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("delete-category-btn");
@@ -157,7 +157,7 @@ const loadMyCategories = async (categories) => {
     categories = await chrome.runtime.sendMessage({ type: "getCategories" });
   }
 
-  container.innerHTML = "";
+  container.replaceChildren();
 
   if (categories.length === 0) {
     container.appendChild(createNoCategoriesContainer());

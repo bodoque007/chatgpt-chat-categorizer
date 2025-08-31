@@ -196,22 +196,72 @@ const waitForChatList = () => {
   const sidebar = document.querySelector("aside");
   if (sidebar) {
     addCategoryButtons();
+    setupObserver();
   } else {
     setTimeout(waitForChatList, 1000);
   }
 };
 
+// Setup mutation observer
+const setupObserver = () => {
+  // Watch for new chats being loaded
+  const chatObserver = new MutationObserver((mutations) => {
+    let shouldUpdate = false;
+
+    mutations.forEach((mutation) => {
+      // Check if new nodes were added
+      if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+        mutation.addedNodes.forEach((node) => {
+          // Check if the added node contains chat links or is a chat link itself
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.matches && node.matches('a[href^="/c/"]')) {
+              shouldUpdate = true;
+            } else if (
+              node.querySelector &&
+              node.querySelector('a[href^="/c/"]')
+            ) {
+              shouldUpdate = true;
+            }
+          }
+        });
+      }
+    });
+
+    if (shouldUpdate) {
+      // Small delay to ensure DOM is fully updated
+      setTimeout(addCategoryButtons, 100);
+    }
+  });
+
+  // Observe the sidebar and main content area for changes
+  const sidebar = document.querySelector("aside");
+  const mainContent = document.querySelector("main");
+
+  if (sidebar) {
+    chatObserver.observe(sidebar, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  if (mainContent) {
+    chatObserver.observe(mainContent, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  // Also observe the entire body as fallback
+  chatObserver.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+};
+
 // Initial run with delay
 setTimeout(waitForChatList, 2000);
 
-// Watch for new chats being loaded
-const chatObserver = new MutationObserver((mutations) => {
+// Also run periodically as a safety net
+setInterval(() => {
   addCategoryButtons();
-});
-
-// Observe the sidebar for changes
-const observeTarget = document.querySelector("aside") || document.body;
-chatObserver.observe(observeTarget, {
-  childList: true,
-  subtree: true,
-});
+}, 5000);
