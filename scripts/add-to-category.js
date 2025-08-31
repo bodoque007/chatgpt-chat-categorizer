@@ -31,6 +31,25 @@ const createNoCategoriesText = () => {
   return text;
 };
 
+const MessageType = Object.freeze({
+  error: Symbol(),
+  success: Symbol(),
+});
+
+const showMessage = (messageType, text) => {
+  const divClass =
+    messageType === MessageType.success
+      ? "cg-success-message"
+      : "cg-error-message";
+
+  const popup = document.createElement("div");
+  popup.classList.add(divClass);
+  popup.textContent = text;
+  document.body.appendChild(popup);
+
+  setTimeout(() => popup.remove(), 3000);
+};
+
 const addChatToCategory = (category, chatData) => {
   chrome.runtime
     .sendMessage({
@@ -40,14 +59,14 @@ const addChatToCategory = (category, chatData) => {
     })
     .then((res) => {
       if (res.success) {
+        showMessage(MessageType.success, `Added to "${category.name}"`);
         closePopup();
-
-        const successMsg = document.createElement("div");
-        successMsg.classList.add("cg-success-message");
-        successMsg.textContent = `Added to "${category.name}"`;
-        document.body.appendChild(successMsg);
-
-        setTimeout(() => successMsg.remove(), 3000);
+      } else if (res.errorCode === "already_in_category") {
+        showMessage(
+          MessageType.error,
+          `"${chatData.title}" is already in ${category.name} category.`,
+        );
+        closePopup();
       }
     });
 };

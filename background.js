@@ -34,6 +34,7 @@ chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
           sendResponse({
             success: false,
             error: "Chat already in this category",
+            errorCode: "already_in_category",
           });
           return;
         }

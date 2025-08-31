@@ -162,3 +162,15 @@
   z-index: 10000;
   font-size: 14px;
 }
+
+.cg-error-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #a31010;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  z-index: 10000;
+  font-size: 14px;
+}
