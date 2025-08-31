@@ -130,6 +130,7 @@ const createCategoryButton = (chatData) => {
     e.stopPropagation();
 
     const popup = await createPopup(chatData);
+    document.body.appendChild(background);
     document.body.appendChild(popup);
   });
 
@@ -260,8 +261,3 @@ const setupObserver = () => {
 
 // Initial run with delay
 setTimeout(waitForChatList, 2000);
-
-// Also run periodically as a safety net
-setInterval(() => {
-  addCategoryButtons();
-}, 5000);
