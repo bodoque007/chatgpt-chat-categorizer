@@ -88,7 +88,7 @@ const createPopup = async (chatData) => {
   const title = document.createElement("h2");
   title.textContent = "Add to Category";
 
-  const chatTitle = document.createElement("div");
+  const chatTitle = document.createElement("span");
   chatTitle.classList.add("cg-chat-title");
   chatTitle.textContent = `"${chatData.title}"`;
 

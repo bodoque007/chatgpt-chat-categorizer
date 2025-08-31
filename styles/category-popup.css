@@ -73,7 +73,6 @@
 
 .cg-categories-list li:hover {
   background-color: #10a37f;
-  transform: scale(1.02);
 }
 
 .cg-add-category-btn {
@@ -143,13 +142,12 @@
 }
 
 .cg-chat-title {
-  color: #8e8ea0;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 20px;
-  padding: 10px;
-  background: #1a1a1a;
-  border-radius: 6px;
-  border-left: 3px solid #10a37f;
+  font-weight: bold;
+  text-shadow: 1px #000;
+  text-align: center;
+  color: #10a37f;
 }
 
 /* Success message */
