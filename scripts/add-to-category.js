@@ -197,7 +197,6 @@ const waitForChatList = () => {
   }
 };
 
-// Setup mutation observer
 const setupObserver = () => {
   // Watch for new chats being loaded
   const chatObserver = new MutationObserver((mutations) => {
@@ -228,26 +227,8 @@ const setupObserver = () => {
     }
   });
 
-  // Observe the sidebar and main content area for changes
-  const sidebar = document.querySelector("aside");
-  const mainContent = document.querySelector("main");
-
-  if (sidebar) {
-    chatObserver.observe(sidebar, {
-      childList: true,
-      subtree: true,
-    });
-  }
-
-  if (mainContent) {
-    chatObserver.observe(mainContent, {
-      childList: true,
-      subtree: true,
-    });
-  }
-
-  // Also observe the entire body as fallback
-  chatObserver.observe(document.body, {
+  const observeTarget = document.querySelector("#__next") || document.body;
+  chatObserver.observe(observeTarget, {
     childList: true,
     subtree: true,
   });

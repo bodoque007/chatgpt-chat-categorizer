@@ -39,12 +39,7 @@ chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
           return;
         }
 
-        const newChatId = self.crypto.randomUUID();
-
-        categories[categoryIndex].chats = [
-          ...categories[categoryIndex].chats,
-          { id: newChatId, ...message.chat },
-        ];
+        categories[categoryIndex].chats.push(message.chat);
 
         chrome.storage.local.set({ categories }).then(() => {
           sendResponse({ success: true });
