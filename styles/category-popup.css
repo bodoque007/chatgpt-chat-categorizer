@@ -1,0 +1,128 @@
+.cg-popup * {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.cg-category-popup-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  position: fixed;
+  z-index: 10000;
+}
+
+.cg-popup {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  background-color: #212121;
+  border: 1px solid #4a4a4a;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  max-width: 90vw;
+  z-index: 10001;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  color: #ececf1;
+}
+
+.cg-popup h2 {
+  font-size: 20px;
+  color: #ececf1;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.cg-no-categories-text {
+  font-size: 14px;
+  color: #8e8ea0;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+.cg-categories-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.cg-categories-list li {
+  padding: 12px 16px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: 1px solid #4a4a4a;
+  margin-bottom: 8px;
+  background: #2d2d30;
+  color: #ececf1;
+}
+
+.cg-categories-list li:hover {
+  background-color: #10a37f;
+  transform: scale(1.02);
+}
+
+.cg-add-category-btn {
+  background: transparent;
+  border: 1px solid #565869;
+  color: #ececf1;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 8px;
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+.cg-add-category-btn:hover {
+  background-color: #10a37f;
+  border-color: #10a37f;
+}
+
+#cg-close-popup-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: #ececf1;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#cg-close-popup-btn:hover {
+  color: #ff6b6b;
+}
+
+#cg-categories-btn {
+  background: transparent;
+  border: 1px solid #565869;
+  color: #ececf1;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+#cg-categories-btn:hover {
+  background-color: #2d2d30;
+  border-color: #6e6e80;
+}

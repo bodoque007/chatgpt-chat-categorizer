@@ -1,86 +1,110 @@
-const openWatchListPage = () =>
-	chrome.tabs.create({
-		url: chrome.runtime.getURL("/watchlist/watchlist.html"),
-	});
+const openCategoriesPage = () =>
+  chrome.tabs.create({
+    url: chrome.runtime.getURL("/categories/categories.html"),
+  });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-	switch (message.type) {
-		case "openExtensionPage":
-			openWatchListPage();
-			break;
+  switch (message.type) {
+    case "openExtensionPage":
+      openCategoriesPage();
+      break;
 
-		case "getWatchlists":
-			chrome.storage.local.get({ watchlists: [] }).then(({ watchlists }) => {
-				sendResponse(watchlists);
-			});
-			break;
-		case "addToWatchlist":
-			chrome.storage.local.get({ watchlists: [] }).then(({ watchlists }) => {
-				const watchlistIndex = watchlists.findIndex(watchlist => watchlist.id === message.watchlistId);
+    case "getCategories":
+      chrome.storage.local.get({ categories: [] }).then(({ categories }) => {
+        sendResponse(categories);
+      });
+      break;
 
-				if (watchlists[watchlistIndex].elements.find(element => element.playLink === message.element.playLink) != undefined) {
-					return sendResponse({ status: "failed", code: "element_already_exists" });
-				}
+    case "addToCategory":
+      chrome.storage.local.get({ categories: [] }).then(({ categories }) => {
+        const categoryIndex = categories.findIndex(
+          (category) => category.id === message.categoryId,
+        );
 
-				const newElementId = watchlists[watchlistIndex].elements.length > 0 ? watchlists[watchlistIndex].elements.at(-1).id + 1 : 0;
+        if (categoryIndex === -1) {
+          sendResponse({ success: false, error: "Category not found" });
+          return;
+        }
 
-				watchlists[watchlistIndex].elements = [...watchlists[watchlistIndex].elements, { id: newElementId, ...message.element }];
+        // Check if chat already exists in this category
+        const existingChat = categories[categoryIndex].chats.find(
+          (chat) => chat.id === message.chat.id,
+        );
+        if (existingChat) {
+          sendResponse({
+            success: false,
+            error: "Chat already in this category",
+          });
+          return;
+        }
 
-				chrome.storage.local.set({ watchlists }).then(() => {
-					sendResponse({ status: "success" });
-				});
-			});
-			break;
+        const newChatId =
+          categories[categoryIndex].chats.length > 0
+            ? categories[categoryIndex].chats.at(-1).id + 1
+            : 0;
 
-		case "deleteWatchlist":
-			const { id } = message;
-			chrome.storage.local.get({ watchlists: [] }).then(({ watchlists }) => {
-				const updatedWatchlists = watchlists.filter(watchlist => watchlist.id !== id);
-				chrome.storage.local.set({ watchlists: updatedWatchlists }).then(() => {
-					sendResponse(updatedWatchlists);
-				});
-			});
-			break;
+        categories[categoryIndex].chats = [
+          ...categories[categoryIndex].chats,
+          { id: newChatId, ...message.chat },
+        ];
 
-		case "createWatchlist":
-			const { name } = message;
-			chrome.storage.local.get({ watchlists: [] }).then(({ watchlists }) => {
-				const newId = watchlists.length > 0 ? watchlists.at(-1).id + 1 : 0;
+        chrome.storage.local.set({ categories }).then(() => {
+          sendResponse({ success: true });
+        });
+      });
+      break;
 
-				const newWatchList = [...watchlists, { id: newId, name, elements: [] }];
-				chrome.storage.local.set({ watchlists: newWatchList }).then(() => {
-					sendResponse(newWatchList);
-				});
-			});
-			break;
+    case "deleteCategory":
+      const { id } = message;
+      chrome.storage.local.get({ categories: [] }).then(({ categories }) => {
+        const updatedCategories = categories.filter(
+          (category) => category.id !== id,
+        );
+        chrome.storage.local.set({ categories: updatedCategories }).then(() => {
+          sendResponse(updatedCategories);
+        });
+      });
+      break;
 
-		case "removeFromWatchlist":
-			const { watchlistId, elementId } = message;
-			chrome.storage.local.get({ watchlists: [] }).then(({ watchlists }) => {
-				const watchlistIndex = watchlists.findIndex(watchlist => watchlist.id === watchlistId);
-				if (watchlistIndex === -1) return sendResponse({ status: "failed", code: "watchlist_not_found" });
+    case "createCategory":
+      const { name } = message;
+      chrome.storage.local.get({ categories: [] }).then(({ categories }) => {
+        const newId = categories.length > 0 ? categories.at(-1).id + 1 : 0;
 
-				const elementIndex = watchlists[watchlistIndex].elements.findIndex(element => element.id === elementId);
-				if (elementIndex === -1) return sendResponse({ status: "failed", code: "element_not_found" });
+        const newCategory = [...categories, { id: newId, name, chats: [] }];
+        chrome.storage.local.set({ categories: newCategory }).then(() => {
+          sendResponse(newCategory);
+        });
+      });
+      break;
 
-				watchlists[watchlistIndex].elements.splice(elementIndex, 1);
+    case "removeFromCategory":
+      const { categoryId, chatId } = message;
+      chrome.storage.local.get({ categories: [] }).then(({ categories }) => {
+        const categoryIndex = categories.findIndex(
+          (category) => category.id === categoryId,
+        );
+        if (categoryIndex !== -1) {
+          categories[categoryIndex].chats = categories[
+            categoryIndex
+          ].chats.filter((chat) => chat.id !== chatId);
+          chrome.storage.local.set({ categories }).then(() => {
+            sendResponse({ success: true });
+          });
+        }
+      });
+      break;
 
-				chrome.storage.local.set({ watchlists }).then(() => {
-					console.log("back", watchlists);
-					sendResponse(watchlists);
-				});
-			});
-			break;
-		case "playElement":
-			const { link } = message;
-			chrome.tabs.create({
-				url: link,
-			});
-			break;
-	}
-	return true;
+    case "openChat":
+      const { url } = message;
+      chrome.tabs.create({
+        url: url,
+      });
+      break;
+  }
+  return true;
 });
 
 chrome.action.onClicked.addListener(() => {
-	openWatchListPage();
+  openCategoriesPage();
 });
