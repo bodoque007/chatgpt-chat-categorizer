@@ -78,7 +78,14 @@ const createCategoryTitleContainer = (category) => {
 
   const title = document.createElement("h2");
   title.classList.add("title");
-  title.textContent = `📁 ${category.name} <span style="font-size: 14px; color: #8e8ea0; font-weight: normal;">(${category.chats.length} chats)</span>`;
+  title.textContent = `📁 ${category.name} `;
+
+  const countSpan = document.createElement("span");
+  countSpan.style.cssText =
+    "font-size: 14px; color: #8e8ea0; font-weight: normal;";
+  countSpan.textContent = `(${category.chats.length} chats)`;
+
+  title.appendChild(countSpan);
 
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("delete-category-btn");
@@ -140,7 +147,9 @@ const createNoCategoriesContainer = () => {
   createBtn.id = "create-category-btn";
   createBtn.textContent = "+ Create Your First Category";
   createBtn.onclick = () => {
-    document.querySelector("#create-category-btn").click();
+    document
+      .querySelector("#create-category-btn")
+      .dispatchEvent(new MouseEvent("click"));
   };
 
   container.appendChild(title);
