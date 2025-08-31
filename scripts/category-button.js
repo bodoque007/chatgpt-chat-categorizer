@@ -8,26 +8,12 @@ function renderCategoryButton() {
 
   // Create the button container
   const buttonContainer = document.createElement("div");
-  buttonContainer.style.cssText = `
-		padding: 8px 12px;
-		margin: 8px 0;
-		border-bottom: 1px solid #4a4a4a;
-	`;
+
+  buttonContainer.classList.add("cg-categories-btn-container");
 
   const btn = document.createElement("button");
   btn.textContent = "📁 My Categories";
   btn.id = "cg-categories-btn";
-  btn.style.cssText = `
-		background: transparent;
-		border: 1px solid #565869;
-		color: #ececf1;
-		padding: 8px 16px;
-		border-radius: 6px;
-		cursor: pointer;
-		font-size: 14px;
-		width: 100%;
-		transition: all 0.2s;
-	`;
 
   btn.onmouseover = () => {
     btn.style.backgroundColor = "#2d2d30";

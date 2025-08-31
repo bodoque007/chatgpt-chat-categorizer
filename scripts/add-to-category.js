@@ -31,6 +31,25 @@ const createNoCategoriesText = () => {
   return text;
 };
 
+const MessageType = Object.freeze({
+  error: Symbol(),
+  success: Symbol(),
+});
+
+const showMessage = (messageType, text) => {
+  const divClass =
+    messageType === MessageType.success
+      ? "cg-success-message"
+      : "cg-error-message";
+
+  const popup = document.createElement("div");
+  popup.classList.add(divClass);
+  popup.textContent = text;
+  document.body.appendChild(popup);
+
+  setTimeout(() => popup.remove(), 3000);
+};
+
 const addChatToCategory = (category, chatData) => {
   chrome.runtime
     .sendMessage({
@@ -40,14 +59,14 @@ const addChatToCategory = (category, chatData) => {
     })
     .then((res) => {
       if (res.success) {
+        showMessage(MessageType.success, `Added to "${category.name}"`);
         closePopup();
-
-        const successMsg = document.createElement("div");
-        successMsg.classList.add("cg-success-message");
-        successMsg.textContent = `Added to "${category.name}"`;
-        document.body.appendChild(successMsg);
-
-        setTimeout(() => successMsg.remove(), 3000);
+      } else if (res.errorCode === "already_in_category") {
+        showMessage(
+          MessageType.error,
+          `"${chatData.title}" is already in ${category.name} category.`,
+        );
+        closePopup();
       }
     });
 };
@@ -88,7 +107,7 @@ const createPopup = async (chatData) => {
   const title = document.createElement("h2");
   title.textContent = "Add to Category";
 
-  const chatTitle = document.createElement("div");
+  const chatTitle = document.createElement("span");
   chatTitle.classList.add("cg-chat-title");
   chatTitle.textContent = `"${chatData.title}"`;
 
@@ -103,19 +122,6 @@ const createPopupBackground = () => {
   const popupBackground = document.createElement("div");
   popupBackground.classList.add("cg-category-popup-background");
   popupBackground.onclick = closePopup;
-  popupBackground.style.cssText = `
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background: rgba(0, 0, 0, 0.7);
-		backdrop-filter: blur(5px);
-		z-index: 10000;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	`;
   return popupBackground;
 };
 
@@ -174,17 +180,6 @@ const addCategoryButtons = () => {
     const chatData = extractChatData(chatLink);
 
     const categoryBtn = createCategoryButton(chatData);
-
-    // Show button on hover of the entire chat link
-    chatLink.addEventListener("mouseenter", () => {
-      categoryBtn.style.opacity = "1";
-      categoryBtn.style.transform = "scale(1.1)";
-    });
-
-    chatLink.addEventListener("mouseleave", () => {
-      categoryBtn.style.opacity = "1";
-      categoryBtn.style.transform = "scale(1)";
-    });
 
     // Insert before the menu button
     trailingContainer.insertBefore(categoryBtn, trailingContainer.firstChild);

@@ -81,8 +81,7 @@ const createCategoryTitleContainer = (category) => {
   title.textContent = `📁 ${category.name} `;
 
   const countSpan = document.createElement("span");
-  countSpan.style.cssText =
-    "font-size: 14px; color: #8e8ea0; font-weight: normal;";
+  countSpan.classList.add("cg-category-add-count");
   countSpan.textContent = `(${category.chats.length} chats)`;
 
   title.appendChild(countSpan);
