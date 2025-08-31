@@ -38,10 +38,7 @@ chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
           return;
         }
 
-        const newChatId =
-          categories[categoryIndex].chats.length > 0
-            ? categories[categoryIndex].chats.at(-1).id + 1
-            : 0;
+        const newChatId = self.crypto.randomUUID();
 
         categories[categoryIndex].chats = [
           ...categories[categoryIndex].chats,
@@ -69,7 +66,7 @@ chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
     case "createCategory":
       const { name } = message;
       chrome.storage.local.get({ categories: [] }).then(({ categories }) => {
-        const newId = categories.length > 0 ? categories.at(-1).id + 1 : 0;
+        const newId = self.crypto.randomUUID();
 
         const newCategory = [...categories, { id: newId, name, chats: [] }];
         chrome.storage.local.set({ categories: newCategory }).then(() => {
