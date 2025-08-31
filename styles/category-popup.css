@@ -186,3 +186,12 @@
   color: #8e8ea0;
   font-weight: normal;
 }
+
+.cg-processed {
+  transition: 0.2s transform;
+}
+
+.cg-processed:hover {
+  transition: 0.2s transform;
+  transform: scale(1.02);
+}

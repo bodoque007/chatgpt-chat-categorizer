@@ -181,17 +181,6 @@ const addCategoryButtons = () => {
 
     const categoryBtn = createCategoryButton(chatData);
 
-    // Show button on hover of the entire chat link
-    chatLink.addEventListener("mouseenter", () => {
-      categoryBtn.style.opacity = "1";
-      categoryBtn.style.transform = "scale(1.1)";
-    });
-
-    chatLink.addEventListener("mouseleave", () => {
-      categoryBtn.style.opacity = "1";
-      categoryBtn.style.transform = "scale(1)";
-    });
-
     // Insert before the menu button
     trailingContainer.insertBefore(categoryBtn, trailingContainer.firstChild);
   });
