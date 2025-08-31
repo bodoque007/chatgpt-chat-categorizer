@@ -1,15 +1,10 @@
-// Debug: Log when script loads
-console.log("🚀 ChatGPT Categorizer: Script loaded!");
-
 const getCategories = async () => {
   try {
     const categories = await chrome.runtime.sendMessage({
       type: "getCategories",
     });
-    console.log("📋 Available categories:", categories);
     return categories;
   } catch (error) {
-    console.error("❌ Error getting categories:", error);
     return [];
   }
 };
@@ -250,8 +245,6 @@ const createCategoryButton = (chatData) => {
     e.preventDefault();
     e.stopPropagation();
 
-    console.log("📁 Category button clicked for:", chatData.title);
-
     const popup = await createPopup(chatData);
     const background = createPopupBackground();
 
@@ -283,31 +276,23 @@ const extractChatData = (chatElement) => {
 };
 
 const addCategoryButtons = () => {
-  // Debug: Log what we're looking for
-  console.log("🔍 ChatGPT Categorizer: Looking for chat links...");
-
   // Find all chat links that don't already have category buttons
   const chatLinks = document.querySelectorAll(
     'a[href^="/c/"]:not(.cg-processed)',
   );
-  console.log(`📝 Found ${chatLinks.length} chat links to process`);
 
   chatLinks.forEach((chatLink, index) => {
-    console.log(`Processing chat ${index + 1}:`, chatLink);
-
     // Mark as processed
     chatLink.classList.add("cg-processed");
 
     // Find the trailing button container (where the ... menu is)
     const trailingContainer = chatLink.querySelector(".trailing");
     if (!trailingContainer) {
-      console.log("❌ No trailing container found for chat:", chatLink);
       return;
     }
 
     // Extract chat data
     const chatData = extractChatData(chatLink);
-    console.log("📊 Chat data:", chatData);
 
     // Create and add category button
     const categoryBtn = createCategoryButton(chatData);
@@ -325,7 +310,6 @@ const addCategoryButtons = () => {
 
     // Insert before the menu button
     trailingContainer.insertBefore(categoryBtn, trailingContainer.firstChild);
-    console.log("✅ Added category button to chat:", chatData.title);
   });
 };
 
@@ -333,10 +317,8 @@ const addCategoryButtons = () => {
 const waitForChatList = () => {
   const sidebar = document.querySelector("aside");
   if (sidebar) {
-    console.log("✅ Sidebar found, adding category buttons...");
     addCategoryButtons();
   } else {
-    console.log("⏳ Waiting for sidebar...");
     setTimeout(waitForChatList, 1000);
   }
 };
@@ -346,13 +328,11 @@ setTimeout(waitForChatList, 2000);
 
 // Watch for new chats being loaded
 const chatObserver = new MutationObserver((mutations) => {
-  console.log("🔄 Page mutations detected, checking for new chats...");
   addCategoryButtons();
 });
 
 // Observe the sidebar for changes
 const observeTarget = document.querySelector("aside") || document.body;
-console.log("👁️ Observing target:", observeTarget);
 chatObserver.observe(observeTarget, {
   childList: true,
   subtree: true,

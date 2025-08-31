@@ -8,15 +8,12 @@ A Chrome extension that allows you to organize your ChatGPT conversations into c
 - 🏷️ Easily add chats to categories with one click
 - 🔍 View all categorized chats in a dedicated interface
 - 🚀 Quick access to your organized conversations
-- 💾 Local storage - your data stays private
 
 ## How It Works
 
 ### 1. Install the Extension
 
-1. Load the extension in Chrome by going to `chrome://extensions/`
-2. Enable "Developer mode"
-3. Click "Load unpacked" and select this folder
+- Lol
 
 ### 2. Create Categories
 
@@ -106,4 +103,4 @@ The extension detects ChatGPT's chat list structure:
 
 - Chrome (Manifest V3)
 - Edge (Chromium-based)
-- Other Chromium-based browsers
+- Other Chromium-based browsers (such as Brave)

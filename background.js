@@ -3,7 +3,7 @@ const openCategoriesPage = () =>
     url: chrome.runtime.getURL("/categories/categories.html"),
   });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
   switch (message.type) {
     case "openExtensionPage":
       openCategoriesPage();
