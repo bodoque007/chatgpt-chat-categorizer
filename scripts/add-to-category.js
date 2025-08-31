@@ -130,7 +130,6 @@ const createCategoryButton = (chatData) => {
     e.stopPropagation();
 
     const popup = await createPopup(chatData);
-    document.body.appendChild(background);
     document.body.appendChild(popup);
   });
 
