@@ -122,19 +122,6 @@ const createPopupBackground = () => {
   const popupBackground = document.createElement("div");
   popupBackground.classList.add("cg-category-popup-background");
   popupBackground.onclick = closePopup;
-  popupBackground.style.cssText = `
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background: rgba(0, 0, 0, 0.7);
-		backdrop-filter: blur(5px);
-		z-index: 10000;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	`;
   return popupBackground;
 };
 

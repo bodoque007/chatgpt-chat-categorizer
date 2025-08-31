@@ -174,3 +174,15 @@
   z-index: 10000;
   font-size: 14px;
 }
+
+.cg-categories-btn-container {
+  padding: 8px 12px;
+  margin: 8px 0;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.cg-category-add-count {
+  font-size: 14px;
+  color: #8e8ea0;
+  font-weight: normal;
+}
