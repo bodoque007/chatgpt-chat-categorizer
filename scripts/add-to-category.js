@@ -21,17 +21,6 @@ const createClosePopupButton = () => {
   btn.id = "cg-close-popup-btn";
   btn.onclick = closePopup;
   btn.textContent = "×";
-  btn.style.cssText = `
-		position: absolute;
-		top: 10px;
-		right: 15px;
-		background: transparent;
-		border: none;
-		color: #ececf1;
-		font-size: 24px;
-		cursor: pointer;
-		z-index: 1000;
-	`;
   return btn;
 };
 
@@ -39,12 +28,6 @@ const createNoCategoriesText = () => {
   const text = document.createElement("div");
   text.classList.add("cg-no-categories-text");
   text.textContent = "No categories created yet.";
-  text.style.cssText = `
-		color: #8e8ea0;
-		font-style: italic;
-		text-align: center;
-		padding: 20px;
-	`;
   return text;
 };
 
@@ -59,20 +42,9 @@ const addChatToCategory = (category, chatData) => {
       if (res.success) {
         closePopup();
 
-        // Show success message
         const successMsg = document.createElement("div");
+        successMsg.classList.add("cg-success-message");
         successMsg.textContent = `Added to "${category.name}"`;
-        successMsg.style.cssText = `
-				position: fixed;
-				top: 20px;
-				right: 20px;
-				background: #10a37f;
-				color: white;
-				padding: 10px 20px;
-				border-radius: 6px;
-				z-index: 10000;
-				font-size: 14px;
-			`;
         document.body.appendChild(successMsg);
 
         setTimeout(() => successMsg.remove(), 3000);
@@ -82,36 +54,15 @@ const addChatToCategory = (category, chatData) => {
 
 const createCategoryContainer = (category, chatData) => {
   const li = document.createElement("li");
-  li.style.cssText = `
-		padding: 12px 16px;
-		border-radius: 6px;
-		transition: all 0.2s;
-		cursor: pointer;
-		border: 1px solid #4a4a4a;
-		margin-bottom: 8px;
-		background: #2d2d30;
-	`;
-
-  li.onmouseover = () => {
-    li.style.backgroundColor = "#10a37f";
-    li.style.transform = "scale(1.02)";
-  };
-
-  li.onmouseout = () => {
-    li.style.backgroundColor = "#2d2d30";
-    li.style.transform = "scale(1)";
-  };
 
   li.onclick = () => addChatToCategory(category, chatData);
 
   const name = document.createElement("span");
   name.textContent = `📁 ${category.name}`;
-  name.style.color = "#ececf1";
 
   li.appendChild(name);
   return li;
 };
-
 const createCategoriesContainer = async (chatData) => {
   const categories = await getCategories();
 
@@ -121,13 +72,6 @@ const createCategoriesContainer = async (chatData) => {
 
   const ul = document.createElement("ul");
   ul.classList.add("cg-categories-list");
-  ul.style.cssText = `
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		max-height: 300px;
-		overflow-y: auto;
-	`;
 
   const categoryContainers = categories.map((category) =>
     createCategoryContainer(category, chatData),
@@ -140,41 +84,13 @@ const createCategoriesContainer = async (chatData) => {
 const createPopup = async (chatData) => {
   const popup = document.createElement("div");
   popup.classList.add("cg-popup");
-  popup.style.cssText = `
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		background: #212121;
-		border: 1px solid #4a4a4a;
-		border-radius: 8px;
-		padding: 24px;
-		width: 400px;
-		max-width: 90vw;
-		z-index: 10001;
-		box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-	`;
 
   const title = document.createElement("h2");
   title.textContent = "Add to Category";
-  title.style.cssText = `
-		color: #ececf1;
-		margin: 0 0 20px 0;
-		font-size: 20px;
-		text-align: center;
-	`;
 
   const chatTitle = document.createElement("div");
+  chatTitle.classList.add("cg-chat-title");
   chatTitle.textContent = `"${chatData.title}"`;
-  chatTitle.style.cssText = `
-		color: #8e8ea0;
-		font-size: 14px;
-		margin-bottom: 20px;
-		padding: 10px;
-		background: #1a1a1a;
-		border-radius: 6px;
-		border-left: 3px solid #10a37f;
-	`;
 
   popup.appendChild(createClosePopupButton());
   popup.appendChild(title);
@@ -183,7 +99,6 @@ const createPopup = async (chatData) => {
 
   return popup;
 };
-
 const createPopupBackground = () => {
   const popupBackground = document.createElement("div");
   popupBackground.classList.add("cg-category-popup-background");
@@ -205,56 +120,21 @@ const createPopupBackground = () => {
 };
 
 const createCategoryButton = (chatData) => {
-  const btn = document.createElement("button");
-  btn.classList.add("cg-add-category-btn");
-  btn.textContent = "📁";
-  btn.title = "Add to category";
-  btn.style.cssText = `
-		background: #2d2d30;
-		border: 1px solid #565869;
-		color: #ececf1;
-		padding: 4px 8px;
-		border-radius: 4px;
-		cursor: pointer;
-		font-size: 14px;
-		margin-left: 8px;
-		opacity: 1;
-		transition: all 0.2s;
-		min-width: 28px;
-		height: 28px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	`;
+  const button = document.createElement("button");
+  button.textContent = "+";
+  button.title = "Add to Category";
+  button.classList.add("cg-add-category-btn");
 
-  btn.onmouseenter = () => {
-    btn.style.opacity = "1";
-    btn.style.backgroundColor = "#10a37f";
-    btn.style.borderColor = "#10a37f";
-    btn.style.transform = "scale(1.1)";
-  };
-
-  btn.onmouseleave = () => {
-    btn.style.opacity = "1";
-    btn.style.backgroundColor = "#2d2d30";
-    btn.style.borderColor = "#565869";
-    btn.style.transform = "scale(1)";
-  };
-
-  btn.onclick = async (e) => {
+  button.addEventListener("click", async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     const popup = await createPopup(chatData);
-    const background = createPopupBackground();
-
-    document.body.appendChild(background);
     document.body.appendChild(popup);
-  };
+  });
 
-  return btn;
+  return button;
 };
-
 const extractChatData = (chatElement) => {
   const titleElement = chatElement.querySelector('span[dir="auto"]');
   const title = titleElement
@@ -291,10 +171,8 @@ const addCategoryButtons = () => {
       return;
     }
 
-    // Extract chat data
     const chatData = extractChatData(chatLink);
 
-    // Create and add category button
     const categoryBtn = createCategoryButton(chatData);
 
     // Show button on hover of the entire chat link

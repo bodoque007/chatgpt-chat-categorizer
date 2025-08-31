@@ -157,7 +157,6 @@ const loadMyCategories = async (categories) => {
     categories = await chrome.runtime.sendMessage({ type: "getCategories" });
   }
 
-  // Clear existing content
   container.innerHTML = "";
 
   if (categories.length === 0) {
