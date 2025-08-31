@@ -200,31 +200,40 @@ const waitForChatList = () => {
 const setupObserver = () => {
   // Watch for new chats being loaded
   const chatObserver = new MutationObserver((mutations) => {
-    let shouldUpdate = false;
-
+    const hasAddedNodes = mutations.some((m) => m.addedNodes.length > 0);
+    if (hasAddedNodes) {
+      setTimeout(addCategoryButtons, 100);
+    }
     mutations.forEach((mutation) => {
-      // Check if new nodes were added
-      if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
-        mutation.addedNodes.forEach((node) => {
-          // Check if the added node contains chat links or is a chat link itself
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            if (node.matches && node.matches('a[href^="/c/"]')) {
-              shouldUpdate = true;
-            } else if (
-              node.querySelector &&
-              node.querySelector('a[href^="/c/"]')
-            ) {
-              shouldUpdate = true;
+      if (mutation.removedNodes.length > 0) {
+        mutation.removedNodes.forEach((node) => {
+          // We only care about element nodes
+          if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+          // Check if the removed node is a chat link itself
+          let chatLink = null;
+          if (node.matches && node.matches('a[href^="/c/"]')) {
+            chatLink = node;
+          }
+          // Or if it CONTAINS a chat link (for example if the whole <li> containing it gets removed)
+          else if (node.querySelector) {
+            chatLink = node.querySelector('a[href^="/c/"]');
+          }
+
+          if (chatLink) {
+            const href = chatLink.getAttribute("href");
+            if (href) {
+              const chatId = href.split("/c/")[1];
+              // Tell the background script to delete this chat from all categories
+              chrome.runtime.sendMessage({
+                type: "syncDeleteChat",
+                chatId: chatId,
+              });
             }
           }
         });
       }
     });
-
-    if (shouldUpdate) {
-      // Small delay to ensure DOM is fully updated
-      setTimeout(addCategoryButtons, 100);
-    }
   });
 
   const observeTarget = document.querySelector("#__next") || document.body;

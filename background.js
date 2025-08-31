@@ -94,6 +94,31 @@ chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
         url: url,
       });
       break;
+
+    case "syncDeleteChat":
+      const { chatId: syncChatId } = message;
+      chrome.storage.local.get({ categories: [] }).then(({ categories }) => {
+        let wasModified = false;
+        // Go through each category and filter out the deleted chat
+        const updatedCategories = categories.map((category) => {
+          const originalLength = category.chats.length;
+          category.chats = category.chats.filter(
+            (chat) => chat.id !== syncChatId,
+          );
+          // If the length changed, it means we removed something
+          if (category.chats.length !== originalLength) {
+            wasModified = true;
+          }
+          return category;
+        });
+
+        // Only update storage if a change actually occurred
+        if (wasModified) {
+          chrome.storage.local.set({ categories: updatedCategories });
+        }
+      });
+      // No need for sendResponse, this is a fire-and-forget sync
+      break;
   }
   return true;
 });
