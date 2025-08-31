@@ -1,13 +1,14 @@
 # ChatGPT Chat Categorizer
 
 A Chrome extension that allows you to organize your ChatGPT conversations into custom categories for better organization and retrieval.
-
+# Credits and special thanks
+Initial codebase was from https://github.com/JoaquinGiordano/netflix-custom-watchlists, a Chrome Extension that allows you to have custom watchlists in Netflix (like playlists in Youtube), allowing you to categorize titles you want to watch.
 ## Features
 
-- 📁 Create custom categories for your ChatGPT chats
-- 🏷️ Easily add chats to categories with one click
-- 🔍 View all categorized chats in a dedicated interface
-- 🚀 Quick access to your organized conversations
+- Create custom categories for your ChatGPT chats
+- Easily add chats to categories with one click
+- View all categorized chats in a dedicated interface
+- Quick access to your organized conversations
 
 ## How It Works
 
