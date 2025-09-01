@@ -105,6 +105,4 @@ The extension detects ChatGPT's chat list structure:
 
 ## Browser Support
 
-- Chrome (Manifest V3)
-- Edge (Chromium-based)
-- Other Chromium-based browsers (such as Brave)
+- All Chromium based browsers (Chrome, Brave, etc)
