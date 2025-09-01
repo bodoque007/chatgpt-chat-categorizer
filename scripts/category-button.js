@@ -1,49 +1,53 @@
 function renderCategoryButton() {
   // Look for existing button to avoid duplicates
-  if (document.getElementById("cg-categories-btn")) return;
+  if (document.getElementById("cg-categories-btn")) {
+    return;
+  }
 
-  // Find the sidebar navigation area (where the "Chats" heading is)
-  const chatsSection = document.querySelector("aside h2");
-  if (!chatsSection || !chatsSection.textContent.includes("Chats")) return;
+  // Use the "Explore GPTs" as anchor for the button
+  const gptsButtonAnchor = document.querySelector(
+    '[data-testid="explore-gpts-button"]',
+  );
 
-  // Create the button container
-  const buttonContainer = document.createElement("div");
+  // Should not happen unless OpenAI change the site.
+  if (!gptsButtonAnchor) {
+    return;
+  }
 
-  buttonContainer.classList.add("cg-categories-btn-container");
+  // We'll use an <a> tag to try mimic the other menu items.
+  const myCategoriesLink = document.createElement("a");
+  myCategoriesLink.id = "cg-categories-btn";
+  myCategoriesLink.className = "group __menu-item hoverable"; // Use the same classes OpenAI uses
+  myCategoriesLink.href = "#"; // Set a dummy href
 
-  const btn = document.createElement("button");
-  btn.textContent = "📁 My Categories";
-  btn.id = "cg-categories-btn";
+  // Recreate the inner structure of the native buttons
+  myCategoriesLink.innerHTML = `
+    <div class="flex min-w-0 items-center gap-1.5">
+      <div class="flex items-center justify-center icon">
+        <span style="font-size: 18px;">📁</span>
+      </div>
+      <div class="flex min-w-0 grow items-center gap-2.5">
+        <div class="truncate">My Categories</div>
+      </div>
+    </div>
+  `;
 
-  btn.onmouseover = () => {
-    btn.style.backgroundColor = "#2d2d30";
-    btn.style.borderColor = "#6e6e80";
-  };
-
-  btn.onmouseout = () => {
-    btn.style.backgroundColor = "transparent";
-    btn.style.borderColor = "#565869";
-  };
-
-  btn.onclick = () => {
+  myCategoriesLink.onclick = (e) => {
+    e.preventDefault(); // Prevent the link from trying to navigate
     chrome.runtime.sendMessage({ type: "openExtensionPage" });
   };
 
-  buttonContainer.appendChild(btn);
-
-  // Insert the button after the "Chats" heading
-  const parentSection = chatsSection.closest("aside");
-  if (parentSection) {
-    parentSection.insertBefore(buttonContainer, parentSection.children[1]);
+  if (gptsButtonAnchor.parentElement) {
+    gptsButtonAnchor.parentElement.insertBefore(
+      myCategoriesLink,
+      gptsButtonAnchor,
+    );
   }
 }
 
-// Initial render
-renderCategoryButton();
-
-// Watch for navigation changes
+// Observer made to watch for navigation and UI changes to re-render the button if needed.
 const observer = new MutationObserver(() => {
-  renderCategoryButton();
+  setTimeout(renderCategoryButton, 500);
 });
 
 // Observe the main app container for changes
@@ -52,3 +56,8 @@ observer.observe(appContainer, {
   childList: true,
   subtree: true,
 });
+
+setTimeout(renderCategoryButton, 1000);
+
+// Initial render
+renderCategoryButton();
